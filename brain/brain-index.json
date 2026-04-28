@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "trained": true,
+  "last_training_at": "2026-04-28T00:59:44.072Z",
+  "memories": [
+    {
+      "id": "mem_20260428005944072_03987f88",
+      "type": "pdf_training",
+      "origin": "pdf",
+      "path": "memories\\pdf\\mem_20260428005944072_03987f88.json",
+      "created_at": "2026-04-28T00:59:44.072Z",
+      "expires_at": "2026-07-27T00:59:44.072Z",
+      "status": "active",
+      "summary": "**Resumo de Aprendizados para Memórias Futuras**\n\nO balancete fiscal da empresa RC BARES E RESTAURANTES LTDA, referente ao período de 01/jan/2025 a 31/dez/2025, apresenta uma estrutura contábil complexa, com diversas contas e subcontas. A seguir, são apresentados os principais pontos de aprendizado:"
+    },
+    {
+      "id": "mem_20260428010018620_0dd6ddf7",
+      "type": "chat_question",
+      "origin": "chat",
+      "path": "memories\\chat\\mem_20260428010018620_0dd6ddf7.json",
+      "created_at": "2026-04-28T01:00:18.620Z",
+      "expires_at": "2026-07-27T01:00:18.620Z",
+      "status": "active",
+      "summary": "Bom dia"
+    },
+    {
+      "id": "mem_20260428010045302_87ee71da",
+      "type": "pdf_analysis",
+      "origin": "pdf",
+      "path": "memories\\analysis\\mem_20260428010045302_87ee71da.json",
+      "created_at": "2026-04-28T01:00:45.302Z",
+      "expires_at": "2026-07-27T01:00:45.302Z",
+      "status": "active",
+      "summary": "Analise do arquivo balancete 2025_4.pdf"
+    },
+    {
+      "id": "mem_20260428010151092_c90a447a",
+      "type": "chat_question",
+      "origin": "chat",
+      "path": "memories\\chat\\mem_20260428010151092_c90a447a.json",
+      "created_at": "2026-04-28T01:01:51.092Z",
+      "expires_at": "2026-07-27T01:01:51.092Z",
+      "status": "active",
+      "summary": "Qual é o valor total dos bancos da empresa?"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+node_modules/
+modelo_balancete/
+.env
+.env.local
+*.log
+*.pid
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/logs/*
+!backend/logs/.gitkeep
+brain/memories/**/*.json
+brain/summaries/**/*.json
+brain/retention/expired/**/*.json
+dist/
+.DS_Store

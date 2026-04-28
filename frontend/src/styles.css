@@ -1,0 +1,273 @@
+:root {
+  color: #202123;
+  background: #f7f7f8;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.boot-fallback {
+  color: #202123;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 24px;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: #171717;
+  color: #f4f4f5;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 18px;
+}
+
+.brand,
+.new-chat,
+.status-row,
+.api-key-row,
+.composer,
+.upload-button {
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  gap: 10px;
+  font-weight: 700;
+}
+
+.new-chat {
+  gap: 10px;
+  justify-content: flex-start;
+  border: 1px solid #343541;
+  background: transparent;
+  color: #f4f4f5;
+  border-radius: 8px;
+  padding: 11px 12px;
+}
+
+.sidebar-section {
+  border-top: 1px solid #343541;
+  padding-top: 16px;
+}
+
+.section-title {
+  display: block;
+  color: #a1a1aa;
+  font-size: 12px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.status-row {
+  justify-content: space-between;
+  gap: 12px;
+  color: #d4d4d8;
+  font-size: 14px;
+  padding: 8px 0;
+}
+
+.workspace {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.api-key-form,
+.memory-notice,
+.error-banner {
+  border-bottom: 1px solid #e5e7eb;
+  padding: 14px 20px;
+}
+
+.api-key-form {
+  display: grid;
+  grid-template-columns: minmax(220px, 360px) 1fr;
+  gap: 16px;
+  background: #ffffff;
+}
+
+.api-key-form label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.api-key-form p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 13px;
+}
+
+.api-key-row {
+  gap: 10px;
+}
+
+.api-key-row input,
+.composer input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 11px 12px;
+}
+
+.api-key-row button,
+.memory-notice button,
+.composer button,
+.upload-button {
+  border: 0;
+  border-radius: 8px;
+  background: #10a37f;
+  color: white;
+  padding: 11px 14px;
+}
+
+.memory-notice {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  background: #fff7ed;
+}
+
+.memory-notice p {
+  margin: 4px 0 0;
+  color: #7c2d12;
+}
+
+.error-banner {
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.chat-shell {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 0;
+  flex: 1;
+}
+
+.chat-header {
+  padding: 28px 28px 12px;
+}
+
+.chat-header h1 {
+  font-size: 24px;
+  margin: 0 0 6px;
+}
+
+.chat-header p {
+  color: #6b7280;
+  margin: 0;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+  padding: 16px 28px 24px;
+}
+
+.message {
+  max-width: 860px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 14px 16px;
+  white-space: pre-wrap;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: #ecfdf5;
+}
+
+.message span {
+  display: block;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.message p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.composer {
+  gap: 10px;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+  padding: 14px 20px;
+}
+
+.composer button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+}
+
+.upload-button {
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.upload-button input {
+  display: none;
+}
+
+.upload-button.disabled,
+button:disabled,
+input:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (max-width: 780px) {
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .api-key-form {
+    grid-template-columns: 1fr;
+  }
+
+  .api-key-row,
+  .composer,
+  .memory-notice {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .composer button {
+    width: 100%;
+  }
+}
