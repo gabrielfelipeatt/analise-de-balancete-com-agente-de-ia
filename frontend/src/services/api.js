@@ -13,7 +13,8 @@ async function request(path, options = {}) {
 
 export const api = {
   getConfig: () => request("/config"),
-  saveGroqKey: (apiKey) => request("/config/groq", { method: "POST", body: JSON.stringify({ apiKey }) }),
+  saveGeminiKey: (apiKey) => request("/config/gemini", { method: "POST", body: JSON.stringify({ apiKey }) }),
+  removeGeminiKey: () => request("/config/gemini", { method: "DELETE" }),
   getBrainStatus: () => request("/brain/status"),
   trainChat: (message) => request("/training/chat", { method: "POST", body: JSON.stringify({ message }) }),
   trainPdf: (file) => {

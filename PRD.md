@@ -6,7 +6,7 @@ O produto e uma aplicacao web de agente de IA especializado em analise de balanc
 
 O usuario podera enviar balancetes fiscais em PDF, ensinar regras e criterios diretamente pelo chat, fazer perguntas sobre os documentos analisados e receber sugestoes de perguntas relevantes para analise contabil e fiscal.
 
-A inteligencia principal da aplicacao sera feita por meio da API da Groq. Antes de usar o agente, o usuario devera informar sua chave de API da Groq. Essa chave devera ser tratada como dado sensivel e armazenada em local seguro, sem exposicao no frontend, logs, arquivos publicos ou na pasta `brain`.
+A inteligencia principal da aplicacao sera feita por meio da API do Google Gemini. Antes de usar o agente, o usuario devera informar sua chave de API do Google Gemini. Essa chave devera ser tratada como dado sensivel e armazenada em local seguro, sem exposicao no frontend, logs, arquivos publicos ou na pasta `brain`.
 
 O agente tera uma pasta chamada `brain`, responsavel por armazenar aprendizados extraidos dos PDFs, ensinamentos feitos pelo usuario, resumos, historicos e padroes identificados. As memorias ficarao disponiveis por ate 3 meses. Antes da limpeza de memorias expiradas, o usuario devera receber um aviso claro.
 
@@ -16,7 +16,7 @@ O agente tera uma pasta chamada `brain`, responsavel por armazenar aprendizados 
 - Permitir upload de PDFs de balancetes para leitura, estudo e analise pela IA.
 - Permitir que o usuario ensine a IA diretamente pelo chat, sem necessidade de PDF.
 - Exigir pelo menos um treinamento inicial antes de liberar as funcoes principais.
-- Utilizar a API da Groq como motor de inteligencia artificial.
+- Utilizar a API do Google Gemini como motor de inteligencia artificial.
 - Armazenar aprendizados em uma pasta `brain`.
 - Manter as memorias por ate 3 meses, com aviso antes da limpeza.
 - Gerar perguntas genericas e especificas sobre balancetes fiscais.
@@ -45,7 +45,7 @@ O produto busca resolver esses problemas oferecendo um agente de IA treinavel, c
 
 ## 5. Solucao Proposta
 
-A solucao sera uma aplicacao web com interface conversacional inspirada no ChatGPT. O usuario informara sua chave de API da Groq, fara um treinamento inicial obrigatorio e, depois disso, podera enviar balancetes em PDF ou ensinar a IA diretamente pelo chat.
+A solucao sera uma aplicacao web com interface conversacional inspirada no ChatGPT. O usuario informara sua chave de API do Google Gemini, fara um treinamento inicial obrigatorio e, depois disso, podera enviar balancetes em PDF ou ensinar a IA diretamente pelo chat.
 
 O agente devera:
 
@@ -61,9 +61,9 @@ O agente devera:
 
 ## 6. Funcionalidades Principais
 
-### 6.1 Configuracao da Chave Groq
+### 6.1 Configuracao da Chave Google Gemini
 
-O usuario devera inserir sua chave de API da Groq antes de usar o agente. O sistema devera validar a existencia da chave e impedir o uso das funcoes principais caso ela nao esteja configurada.
+O usuario devera inserir sua chave de API do Google Gemini antes de usar o agente. O sistema devera validar a existencia da chave e impedir o uso das funcoes principais caso ela nao esteja configurada.
 
 ### 6.2 Treinamento Inicial Obrigatorio
 
@@ -74,7 +74,7 @@ Antes de liberar analises, perguntas e chat avancado, o sistema deve exigir pelo
 
 ### 6.3 Upload de Balancete em PDF
 
-O usuario podera enviar arquivos PDF contendo balancetes fiscais. O sistema devera extrair o conteudo, organizar os dados relevantes, enviar contexto para a Groq e armazenar aprendizados na pasta `brain`.
+O usuario podera enviar arquivos PDF contendo balancetes fiscais. O sistema devera extrair o conteudo, organizar os dados relevantes, enviar contexto para o Google Gemini e armazenar aprendizados na pasta `brain`.
 
 ### 6.4 Ensino Direto Pelo Chat
 
@@ -101,26 +101,28 @@ As memorias serao mantidas por ate 3 meses. O sistema devera identificar memoria
 ### 7.1 Primeiro Acesso
 
 1. Usuario acessa a aplicacao.
-2. Sistema exibe tela inicial com campo para chave da API Groq.
-3. Usuario informa a chave.
-4. Sistema valida se a chave foi preenchida.
-5. Sistema solicita treinamento inicial obrigatorio.
+2. Sistema verifica se ja existe uma chave da API Google Gemini salva com seguranca.
+3. Se nao houver chave salva, sistema exibe campo para chave da API Google Gemini.
+4. Usuario informa a chave.
+5. Sistema valida se a chave foi preenchida e salva a chave de forma criptografada fora do `brain`.
+6. Sistema solicita treinamento inicial obrigatorio.
 
-### 7.2 Insercao Segura da Chave da API Groq
+### 7.2 Insercao Segura da Chave da API Google Gemini
 
 1. Usuario informa a chave no campo seguro.
 2. Frontend envia a chave ao backend por conexao segura.
 3. Backend armazena a chave em local protegido.
 4. Sistema nunca salva a chave na pasta `brain`.
 5. Sistema mascara a chave na interface.
-6. Logs nao devem registrar a chave.
+6. Usuario pode remover a chave salva pela interface para cadastrar outra.
+7. Logs nao devem registrar a chave.
 
 ### 7.3 Treinamento Inicial Via PDF
 
 1. Usuario seleciona a opcao de treinamento por PDF.
 2. Usuario envia um PDF de balancete.
 3. Sistema extrai o texto do PDF.
-4. Sistema envia o conteudo para analise pela Groq.
+4. Sistema envia o conteudo para analise pelo Google Gemini.
 5. IA gera resumo, padroes e aprendizados iniciais.
 6. Sistema salva memoria na pasta `brain`.
 7. Sistema marca o agente como treinado.
@@ -142,7 +144,7 @@ As memorias serao mantidas por ate 3 meses. O sistema devera identificar memoria
 2. Sistema valida tipo e tamanho do arquivo.
 3. Sistema extrai texto do PDF.
 4. Sistema consulta memorias validas da pasta `brain`.
-5. Sistema envia contexto para a Groq.
+5. Sistema envia contexto para o Google Gemini.
 6. Agente gera resumo e pontos de atencao.
 7. Sistema atualiza a pasta `brain`.
 8. Sistema mostra perguntas genericas, especificas e campo de pergunta livre.
@@ -152,7 +154,7 @@ As memorias serao mantidas por ate 3 meses. O sistema devera identificar memoria
 1. Usuario digita uma pergunta.
 2. Sistema recupera o contexto do PDF atual.
 3. Sistema recupera memorias validas relevantes.
-4. Sistema envia pergunta e contexto para a Groq.
+4. Sistema envia pergunta e contexto para o Google Gemini.
 5. Agente responde de forma clara, indicando pontos de atencao.
 6. Sistema registra a pergunta e, se relevante, a resposta na pasta `brain`.
 
@@ -188,17 +190,21 @@ As memorias serao mantidas por ate 3 meses. O sistema devera identificar memoria
 
 A aplicacao deve possuir layout com sidebar lateral, area principal de conversa, campo de mensagem, upload de arquivos e historico de conversas ou analises.
 
-### RF-002 - Campo de Chave Groq
+### RF-002 - Campo de Chave Google Gemini
 
-A aplicacao deve solicitar a chave da API Groq antes de liberar as funcionalidades principais.
+A aplicacao deve solicitar a chave da API Google Gemini antes de liberar as funcionalidades principais.
 
 ### RF-003 - Bloqueio Sem Chave
 
-O sistema deve bloquear upload, treinamento, perguntas e chat avancado enquanto a chave da API Groq nao estiver configurada.
+O sistema deve bloquear upload, treinamento, perguntas e chat avancado enquanto a chave da API Google Gemini nao estiver configurada.
 
 ### RF-004 - Armazenamento Seguro da Chave
 
-A chave da API deve ser armazenada em local seguro, preferencialmente no backend, usando variaveis de ambiente, cofre de segredos, criptografia ou mecanismo equivalente.
+A chave da API deve ser armazenada no backend, fora da pasta `brain`, usando criptografia ou mecanismo equivalente.
+
+### RF-004.1 - Remocao da Chave
+
+A aplicacao deve permitir remover a chave salva para que o usuario possa cadastrar outra chave.
 
 ### RF-005 - Treinamento Inicial Obrigatorio
 
@@ -275,7 +281,7 @@ A interface deve exibir estados de carregamento, erro, sucesso, treinamento conc
 - O codigo deve ser modular e facil de manter.
 - A pasta `brain` deve ter estrutura organizada e legivel.
 - As respostas da IA devem ser claras, profissionais e voltadas ao contexto contabil/fiscal.
-- O sistema deve tratar erros de PDF invalido, chave ausente, falha na API da Groq e falha de leitura/escrita no `brain`.
+- O sistema deve tratar erros de PDF invalido, chave ausente, falha na API do Google Gemini e falha de leitura/escrita no `brain`.
 - O sistema deve preservar a privacidade dos dados enviados pelo usuario.
 
 ## 10. Arquitetura Tecnica Sugerida
@@ -289,7 +295,7 @@ Responsavel pela interface web, incluindo:
 - Area de conversa.
 - Campo de mensagem.
 - Upload de PDF.
-- Tela de configuracao da chave Groq.
+- Tela de configuracao da Chave Google Gemini.
 - Exibicao dos tres tipos de perguntas.
 - Avisos de memoria expirada.
 - Estados de carregamento e erro.
@@ -306,7 +312,7 @@ Responsavel por:
 
 - Receber PDFs.
 - Extrair texto dos PDFs.
-- Comunicar com a API da Groq.
+- Comunicar com a API do Google Gemini.
 - Gerenciar a pasta `brain`.
 - Proteger a chave de API.
 - Criar, consultar e limpar memorias.
@@ -323,7 +329,7 @@ Tecnologias sugeridas:
 
 Responsavel por:
 
-- Preparar prompts para a Groq.
+- Preparar prompts para o Google Gemini.
 - Enviar contexto do PDF e memorias validas.
 - Classificar mensagens como pergunta, ensinamento ou comando.
 - Gerar resumos, perguntas e respostas.
@@ -352,7 +358,7 @@ agente-contabil/
     src/
       api/
       services/
-        groqService.js
+        geminiService.js
         pdfService.js
         brainService.js
         memoryRetentionService.js
@@ -396,16 +402,16 @@ agente-contabil/
 }
 ```
 
-## 12. Integracao com Groq
+## 12. Integracao com Google Gemini
 
-A integracao com a Groq deve ser feita exclusivamente pelo backend. O frontend nao deve chamar a Groq diretamente com a chave do usuario.
+A integracao com o Google Gemini deve ser feita exclusivamente pelo backend. O frontend nao deve chamar o Google Gemini diretamente com a chave do usuario.
 
 ### Requisitos da Integracao
 
 - Receber a chave de API do usuario de forma segura.
 - Validar a presenca da chave antes de executar chamadas.
 - Montar prompts com contexto do PDF, memorias validas e pergunta do usuario.
-- Enviar solicitacoes para a API da Groq.
+- Enviar solicitacoes para a API do Google Gemini.
 - Tratar erros de autenticacao, limite de uso, timeout e indisponibilidade.
 - Remover dados sensiveis dos logs.
 - Nunca incluir a chave em mensagens para a IA.
@@ -445,12 +451,12 @@ Antes de responder, o backend deve:
 1. Identificar o contexto da conversa.
 2. Buscar memorias ativas e relevantes.
 3. Ignorar memorias expiradas.
-4. Montar contexto para a Groq.
+4. Montar contexto para o Google Gemini.
 5. Registrar novos aprendizados se houver.
 
 ### O Que Nao Deve Ser Armazenado no `brain`
 
-- Chave da API Groq em texto puro.
+- Chave da API Google Gemini em texto puro.
 - Segredos de ambiente.
 - Tokens de sessao.
 - Senhas.
@@ -490,7 +496,7 @@ Para o MVP, a recomendacao e:
 
 ## 15. Seguranca da Chave de API
 
-A chave da API Groq e um dado sensivel e deve ser protegida.
+A chave da API Google Gemini e um dado sensivel e deve ser protegida.
 
 ### Regras Obrigatorias
 
@@ -499,7 +505,7 @@ A chave da API Groq e um dado sensivel e deve ser protegida.
 - A chave nao pode aparecer em respostas da IA.
 - A chave nao pode ficar exposta no frontend.
 - A chave deve ser mascarada na interface.
-- O backend deve ser responsavel pelas chamadas para a Groq.
+- O backend deve ser responsavel pelas chamadas para o Google Gemini.
 
 ### Armazenamento Recomendado
 
@@ -546,7 +552,7 @@ Exemplo de confirmacao:
 
 ## 17. Regras de Negocio
 
-- O usuario nao pode usar o agente sem configurar a chave da API Groq.
+- O usuario nao pode usar o agente sem configurar a chave da API Google Gemini.
 - O usuario nao pode acessar funcoes principais antes do treinamento inicial.
 - O treinamento inicial pode ser feito por PDF ou chat.
 - Todo PDF enviado deve gerar aprendizado ou registro de analise no `brain`.
@@ -554,7 +560,8 @@ Exemplo de confirmacao:
 - Memorias expiram apos 3 meses.
 - Memorias expiradas nao devem ser usadas em respostas.
 - O usuario deve receber aviso antes da limpeza de memorias expiradas.
-- A chave da API Groq nunca deve ser salva em texto puro no `brain`.
+- A chave da API Google Gemini nunca deve ser salva em texto puro no `brain`.
+- A chave salva deve permanecer disponivel em novas execucoes da aplicacao ate que o usuario a remova.
 - Perguntas especificas devem ser baseadas no conteudo real do PDF enviado.
 - Perguntas genericas devem refletir boas praticas de analise de balancetes.
 - O agente deve responder com foco contabil/fiscal, evitando respostas genericas quando houver contexto disponivel.
@@ -563,9 +570,10 @@ Exemplo de confirmacao:
 
 ## 18. Criterios de Aceite
 
-- O usuario nao consegue usar o agente sem inserir a chave da API Groq.
-- A chave da API Groq nao e salva em texto puro na pasta `brain`.
-- O frontend nao chama diretamente a API da Groq com a chave do usuario.
+- O usuario nao consegue usar o agente sem inserir a chave da API Google Gemini.
+- A chave da API Google Gemini nao e salva em texto puro na pasta `brain`.
+- O usuario consegue remover a chave salva e cadastrar outra pela interface.
+- O frontend nao chama diretamente a API do Google Gemini com a chave do usuario.
 - O usuario nao consegue acessar funcoes principais antes do treinamento inicial.
 - O treinamento inicial pode ser feito via PDF.
 - O treinamento inicial pode ser feito via chat.
@@ -583,7 +591,7 @@ Exemplo de confirmacao:
 - Memorias sao mantidas por ate 3 meses.
 - O usuario recebe aviso antes da limpeza de memorias antigas.
 - O agente usa apenas memorias validas para melhorar respostas futuras.
-- Memorias expiradas nao sao incluidas no contexto enviado a Groq.
+- Memorias expiradas nao sao incluidas no contexto enviado ao Google Gemini.
 - A interface apresenta estados de carregamento, erro e sucesso.
 - A sidebar permite consultar historico de conversas e analises disponiveis.
 
@@ -603,7 +611,7 @@ Balancetes podem conter informacoes financeiras sensiveis. O sistema deve evitar
 
 ### 19.4 Seguranca da Chave de API
 
-A chave da Groq nao pode vazar por logs, frontend, historico, pasta `brain` ou mensagens da IA.
+A chave do Google Gemini nao pode vazar por logs, frontend, historico, pasta `brain` ou mensagens da IA.
 
 ### 19.5 Crescimento da Pasta `brain`
 
@@ -613,7 +621,7 @@ Mesmo com retencao de 3 meses, a pasta pode crescer. O sistema deve ter limpeza,
 
 Memorias antigas podem gerar respostas incorretas. Por isso, o uso deve ser limitado a memorias validas.
 
-### 19.7 Limites da API Groq
+### 19.7 Limites da API Google Gemini
 
 O sistema deve tratar limites de taxa, timeout, indisponibilidade e erros de autenticacao.
 
@@ -624,7 +632,7 @@ O sistema deve tratar limites de taxa, timeout, indisponibilidade e erros de aut
 - Criar estrutura frontend e backend.
 - Criar layout de chat inspirado no ChatGPT.
 - Criar sidebar com historico basico.
-- Criar campo de chave Groq.
+- Criar campo de Chave Google Gemini.
 - Criar validacao de chave informada.
 
 ### Fase 2 - Treinamento Inicial
@@ -638,7 +646,7 @@ O sistema deve tratar limites de taxa, timeout, indisponibilidade e erros de aut
 
 - Implementar upload de PDF.
 - Implementar extracao de texto.
-- Integrar analise com Groq.
+- Integrar analise com Google Gemini.
 - Gerar resumo do balancete.
 - Gerar perguntas genericas e especificas.
 
@@ -675,7 +683,7 @@ O sistema deve tratar limites de taxa, timeout, indisponibilidade e erros de aut
 - Comparacao automatica entre balancetes de periodos diferentes.
 - Alertas de riscos fiscais com severidade.
 - Integracao com sistemas contabeis.
-- Suporte a multiplos modelos da Groq.
+- Suporte a multiplos modelos do Google Gemini.
 - Criptografia de memorias sensiveis.
 - Auditoria detalhada de acessos e alteracoes.
 - Configuracao customizada do prazo de retencao.

@@ -9,7 +9,7 @@ const initialMessages = [
   {
     id: "welcome",
     role: "assistant",
-    content: "Configure a chave Groq e realize o treinamento inicial por PDF ou mensagem no chat."
+    content: "Configure a chave Google Gemini e realize o treinamento inicial por PDF ou mensagem no chat."
   }
 ];
 
@@ -21,7 +21,7 @@ export function App() {
   const [error, setError] = useState("");
   const [currentContext, setCurrentContext] = useState("");
 
-  const locked = useMemo(() => !config?.hasGroqApiKey, [config]);
+  const locked = useMemo(() => !config?.hasGeminiApiKey, [config]);
 
   async function refreshStatus() {
     const [configData, brainData] = await Promise.all([api.getConfig(), api.getBrainStatus()]);
@@ -38,12 +38,28 @@ export function App() {
   }
 
   async function handleSaveKey(apiKey) {
+    if (!apiKey?.trim()) return;
+
     setLoading(true);
     setError("");
     try {
-      const data = await api.saveGroqKey(apiKey);
+      const data = await api.saveGeminiKey(apiKey);
       setConfig(data);
-      pushMessage("assistant", "Chave Groq configurada. Agora faca o treinamento inicial por PDF ou ensinamento no chat.");
+      pushMessage("assistant", "Chave Google Gemini configurada. Agora faca o treinamento inicial por PDF ou ensinamento no chat.");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function handleRemoveKey() {
+    setLoading(true);
+    setError("");
+    try {
+      const data = await api.removeGeminiKey();
+      setConfig(data);
+      pushMessage("assistant", "Chave Google Gemini removida. Informe uma nova chave para voltar a usar o agente.");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -103,7 +119,7 @@ export function App() {
     <div className="app">
       <Sidebar brainStatus={brainStatus} />
       <div className="workspace">
-        <ApiKeyForm config={config} onSubmit={handleSaveKey} loading={loading} />
+        <ApiKeyForm config={config} onSubmit={handleSaveKey} onRemove={handleRemoveKey} loading={loading} />
         <MemoryNotice notice={brainStatus?.retentionNotice} onClean={handleCleanExpired} />
         {error && <div className="error-banner">{error}</div>}
         <ChatWindow messages={messages} disabled={locked} loading={loading} onAsk={handleAsk} onPdf={handlePdf} />

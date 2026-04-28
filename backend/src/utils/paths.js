@@ -8,3 +8,5 @@ export const rootDir = path.resolve(__dirname, "../../..");
 export const brainDir = path.join(rootDir, "brain");
 export const brainIndexPath = path.join(brainDir, "brain-index.json");
 export const uploadsDir = path.join(rootDir, "backend", "uploads");
+export const secureDir = path.join(rootDir, "backend", ".secure");
+export const geminiKeyPath = path.join(secureDir, "gemini-key.json");

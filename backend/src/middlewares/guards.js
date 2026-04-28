@@ -1,10 +1,10 @@
-import { hasGroqApiKey } from "../services/apiKeyService.js";
+import { hasGeminiApiKey } from "../services/apiKeyService.js";
 import { isTrained } from "../services/brainService.js";
 import { HttpError } from "../utils/httpError.js";
 
-export function requireGroqKey(_req, _res, next) {
-  if (!hasGroqApiKey()) {
-    return next(new HttpError(401, "Configure a chave da API Groq antes de usar o agente."));
+export function requireGeminiKey(_req, _res, next) {
+  if (!hasGeminiApiKey()) {
+    return next(new HttpError(401, "Configure a chave da API Google Gemini antes de usar o agente."));
   }
   next();
 }

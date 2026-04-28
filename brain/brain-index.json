@@ -42,6 +42,16 @@
       "expires_at": "2026-07-27T01:01:51.092Z",
       "status": "active",
       "summary": "Qual é o valor total dos bancos da empresa?"
+    },
+    {
+      "id": "mem_20260428144209305_9cdda376",
+      "type": "pdf_analysis",
+      "origin": "pdf",
+      "path": "memories\\analysis\\mem_20260428144209305_9cdda376.json",
+      "created_at": "2026-04-28T14:42:09.305Z",
+      "expires_at": "2026-07-27T14:42:09.305Z",
+      "status": "active",
+      "summary": "Analise do arquivo BLANCETE 2026 - CARNEIRO DE MELO.pdf"
     }
   ]
 }
