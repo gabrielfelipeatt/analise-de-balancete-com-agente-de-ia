@@ -1,9 +1,13 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3333/api";
+const MASTER_KEY = import.meta.env.VITE_MASTER_KEY || "sua_chave_mestra_aqui";
 
 async function request(path, options = {}) {
+  const headers = options.body instanceof FormData ? {} : { "Content-Type": "application/json" };
+  headers["x-master-key"] = MASTER_KEY;
+
   const response = await fetch(`${API_BASE_URL}${path}`, {
-    headers: options.body instanceof FormData ? undefined : { "Content-Type": "application/json" },
-    ...options
+    ...options,
+    headers: { ...headers, ...options.headers }
   });
 
   const data = await response.json().catch(() => ({}));

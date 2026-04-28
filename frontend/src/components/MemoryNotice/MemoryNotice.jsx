@@ -3,11 +3,8 @@ export function MemoryNotice({ notice, onClean }) {
 
   return (
     <div className="memory-notice">
-      <div>
-        <strong>Memorias antigas encontradas</strong>
-        <p>{notice.count} memoria(s) com mais de 3 meses serao arquivadas e nao serao usadas nas proximas respostas.</p>
-      </div>
-      <button onClick={onClean}>Limpar agora</button>
+      <p><strong>Memorias antigas:</strong> {notice.count} item(s) expirados serao arquivados.</p>
+      <button onClick={onClean}>Limpar Memorias</button>
     </div>
   );
 }

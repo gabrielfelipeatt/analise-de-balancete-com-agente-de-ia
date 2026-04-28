@@ -52,6 +52,46 @@
       "expires_at": "2026-07-27T14:42:09.305Z",
       "status": "active",
       "summary": "Analise do arquivo BLANCETE 2026 - CARNEIRO DE MELO.pdf"
+    },
+    {
+      "id": "mem_20260428161101653_c6e6df9a",
+      "type": "pdf_analysis",
+      "origin": "pdf",
+      "path": "memories\\analysis\\mem_20260428161101653_c6e6df9a.json",
+      "created_at": "2026-04-28T16:11:01.653Z",
+      "expires_at": "2026-07-27T16:11:01.653Z",
+      "status": "active",
+      "summary": "Analise do arquivo BLANCETE 2026 - CARNEIRO DE MELO.pdf"
+    },
+    {
+      "id": "mem_20260428161314818_5e3bae97",
+      "type": "chat_question",
+      "origin": "chat",
+      "path": "memories\\chat\\mem_20260428161314818_5e3bae97.json",
+      "created_at": "2026-04-28T16:13:14.818Z",
+      "expires_at": "2026-07-27T16:13:14.818Z",
+      "status": "active",
+      "summary": "A distribuição antecipada de lucros é maior que o resultado do período ?"
+    },
+    {
+      "id": "mem_20260428161508538_4c91b98a",
+      "type": "chat_question",
+      "origin": "chat",
+      "path": "memories\\chat\\mem_20260428161508538_4c91b98a.json",
+      "created_at": "2026-04-28T16:15:08.538Z",
+      "expires_at": "2026-07-27T16:15:08.538Z",
+      "status": "active",
+      "summary": "Sempre que A distribuição antecipada de lucros for maior que o resultado do período quero que me sinalize após enviar o arquivo em PDF."
+    },
+    {
+      "id": "mem_20260428161612532_6bb0cccc",
+      "type": "chat_question",
+      "origin": "chat",
+      "path": "memories\\chat\\mem_20260428161612532_6bb0cccc.json",
+      "created_at": "2026-04-28T16:16:12.532Z",
+      "expires_at": "2026-07-27T16:16:12.532Z",
+      "status": "active",
+      "summary": "Houve algum caso onde A distribuição antecipada de lucros foi maior que o resultado do período ?"
     }
   ]
 }

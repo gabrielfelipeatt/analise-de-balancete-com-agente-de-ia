@@ -5,19 +5,20 @@ import { trainChat, trainPdf } from "../controllers/trainingController.js";
 import { askQuestion } from "../controllers/chatController.js";
 import { uploadPdf } from "../controllers/pdfController.js";
 import { asyncHandler } from "../middlewares/asyncHandler.js";
-import { requireGeminiKey, requireTrainedAgent } from "../middlewares/guards.js";
+import { requireGeminiKey, requireMasterKey, requireTrainedAgent } from "../middlewares/guards.js";
 import { upload } from "../middlewares/upload.js";
 
 export const routes = Router();
 
 routes.get("/health", (_req, res) => res.json({ ok: true }));
-routes.get("/config", getConfigStatus);
-routes.post("/config/gemini", saveConfig);
-routes.delete("/config/gemini", deleteConfig);
+
+routes.get("/config", requireMasterKey, getConfigStatus);
+routes.post("/config/gemini", requireMasterKey, saveConfig);
+routes.delete("/config/gemini", requireMasterKey, deleteConfig);
 
 routes.get("/brain/status", asyncHandler(getBrainStatus));
 routes.get("/brain/memories", asyncHandler(listMemories));
-routes.post("/brain/clean-expired", asyncHandler(cleanExpiredMemories));
+routes.post("/brain/clean-expired", requireMasterKey, asyncHandler(cleanExpiredMemories));
 
 routes.post("/training/chat", requireGeminiKey, asyncHandler(trainChat));
 routes.post("/training/pdf", requireGeminiKey, upload.single("file"), asyncHandler(trainPdf));

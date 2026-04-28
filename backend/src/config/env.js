@@ -14,5 +14,7 @@ export const env = {
   geminiFallbackModel: process.env.GEMINI_FALLBACK_MODEL || "gemini-2.5-flash-lite",
   geminiMaxRetries: Number(process.env.GEMINI_MAX_RETRIES || 2),
   geminiRetryBaseDelayMs: Number(process.env.GEMINI_RETRY_BASE_DELAY_MS || 1500),
-  memoryRetentionDays: Number(process.env.MEMORY_RETENTION_DAYS || 90)
+  memoryRetentionDays: Number(process.env.MEMORY_RETENTION_DAYS || 90),
+  masterKey: process.env.MASTER_KEY || "",
+  encryptionSecret: process.env.ENCRYPTION_SECRET || ""
 };

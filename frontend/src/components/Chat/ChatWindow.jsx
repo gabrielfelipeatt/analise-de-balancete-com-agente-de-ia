@@ -14,29 +14,45 @@ export function ChatWindow({ messages, disabled, loading, onAsk, onPdf }) {
   return (
     <main className="chat-shell">
       <div className="chat-header">
-        <div>
-          <h1>Analise de balancetes fiscais</h1>
-          <p>Envie PDFs, ensine criterios e pergunte sobre os dados analisados.</p>
-        </div>
+        <h1>Agente Contabil</h1>
+        <p>Envie PDFs, ensine criterios e analise balancetes fiscais.</p>
       </div>
 
       <section className="messages">
         {messages.map((message) => (
           <article key={message.id} className={`message ${message.role}`}>
-            <span>{message.role === "user" ? "Voce" : "Agente"}</span>
-            <p>{message.content}</p>
+            <div className="message-content">
+              <span>{message.role === "user" ? "Voce" : "Agente"}</span>
+              <div className={message.role === "user" ? "message-bubble" : ""}>
+                <p>{message.content}</p>
+              </div>
+            </div>
           </article>
         ))}
-        {loading && <article className="message assistant"><span>Agente</span><p>Processando...</p></article>}
+        {loading && (
+          <article className="message assistant">
+            <div className="message-content">
+              <span>Agente</span>
+              <p>Processando...</p>
+            </div>
+          </article>
+        )}
       </section>
 
-      <form className="composer" onSubmit={handleSubmit}>
-        <PdfUpload disabled={disabled || loading} onFile={onPdf} />
-        <input name="message" disabled={disabled || loading} placeholder={disabled ? "Configure e treine o agente para liberar o chat" : "Digite uma pergunta ou ensinamento"} />
-        <button aria-label="Enviar" disabled={disabled || loading}>
-          <SendHorizontal size={18} />
-        </button>
-      </form>
+      <div className="composer-wrapper">
+        <form className="composer" onSubmit={handleSubmit}>
+          <PdfUpload disabled={disabled || loading} onFile={onPdf} />
+          <input 
+            name="message" 
+            disabled={disabled || loading} 
+            placeholder={disabled ? "Configure a chave para liberar o chat" : "Digite uma pergunta..."} 
+            autoComplete="off"
+          />
+          <button type="submit" aria-label="Enviar" disabled={disabled || loading}>
+            <SendHorizontal size={18} />
+          </button>
+        </form>
+      </div>
     </main>
   );
 }

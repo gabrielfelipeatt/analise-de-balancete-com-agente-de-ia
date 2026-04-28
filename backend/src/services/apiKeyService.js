@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import os from "node:os";
 import { geminiKeyPath, rootDir, secureDir } from "../utils/paths.js";
+import { env } from "../config/env.js";
 
 export function saveGeminiApiKey(apiKey) {
   fs.mkdirSync(secureDir, { recursive: true });
@@ -39,6 +40,7 @@ export function maskApiKey(apiKey = getGeminiApiKey()) {
 function getEncryptionKey() {
   const userInfo = os.userInfo();
   const fingerprint = [
+    env.encryptionSecret || "fallback-static-secret",
     userInfo.username,
     userInfo.homedir,
     os.hostname(),
