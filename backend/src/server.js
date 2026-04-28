@@ -9,11 +9,21 @@ await ensureBrain();
 
 const app = express();
 
-app.use(cors({ origin: env.frontendOrigin }));
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || env.allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(null, false);
+    }
+  })
+);
 app.use(express.json({ limit: "1mb" }));
 app.use("/api", routes);
 app.use(errorHandler);
 
-app.listen(env.port, () => {
-  console.log(`Backend running on http://localhost:${env.port}`);
+app.listen(env.port, env.host, () => {
+  console.log(`Backend running on http://${env.host}:${env.port}`);
 });

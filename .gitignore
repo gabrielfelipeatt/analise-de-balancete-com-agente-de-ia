@@ -13,4 +13,6 @@ brain/memories/**/*.json
 brain/summaries/**/*.json
 brain/retention/expired/**/*.json
 dist/
+dist-electron/
+release/
 .DS_Store

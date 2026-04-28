@@ -1,19 +1,57 @@
 {
   "name": "agente-contabil",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Agente de IA para analise de balancetes fiscais.",
+  "main": "electron-main.cjs",
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
     "dev:backend": "npm run dev --workspace backend",
     "dev:frontend": "npm run dev --workspace frontend",
-    "start": "npm run start --workspace backend"
+    "start": "npm run start --workspace backend",
+    "electron": "electron .",
+    "build": "npm run dist",
+    "build:frontend": "npm run build --workspace frontend",
+    "dist": "npm run build:frontend && electron-builder build --win --publish never"
   },
   "workspaces": [
     "backend",
     "frontend"
   ],
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "multer": "^2.0.2",
+    "pdf-parse": "^1.1.1"
+  },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "electron": "^41.3.0",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.agente.contabil",
+    "productName": "Agente Contabil",
+    "asar": false,
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "electron-main.cjs",
+      "backend/src/**/*",
+      "backend/package.json",
+      "frontend/dist/**/*",
+      "package.json",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "Agente Contabil"
+    }
   }
 }
