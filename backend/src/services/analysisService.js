@@ -1,4 +1,4 @@
-import { askGemini, buildSystemPrompt } from "./geminiService.js";
+import { askGemini, buildSystemPrompt, extractInsights } from "./geminiService.js";
 import { getActiveMemories, getActiveMemoryDocuments, saveMemory } from "./brainService.js";
 
 const MAX_DOCUMENT_CHARS = 115000;
@@ -52,19 +52,18 @@ export async function analyzePdf({ filename, text }) {
     }
   ]);
 
-  const memory = await saveMemory({
-    type: "pdf_analysis",
-    origin: "pdf",
-    summary: `Analise do arquivo ${filename}`,
-    content: {
-      filename,
-      gemini_analysis: response,
-      extracted_text: documentText,
-      extracted_text_chars: text.length
-    }
-  });
+  // Brain Optimization: Extract only key insights
+  const insights = await extractInsights(`Arquivo: ${filename}\n\nAnálise:\n${response}`);
+  for (const insight of insights) {
+    await saveMemory({
+      type: "pdf_analysis",
+      origin: "pdf",
+      summary: insight,
+      content: { filename, insight }
+    });
+  }
 
-  return { response, memory };
+  return { response };
 }
 
 export async function answerQuestion({ question, currentContext = "" }) {
@@ -80,22 +79,22 @@ export async function answerQuestion({ question, currentContext = "" }) {
         "Quando a pergunta pedir valor, conta, saldo ou total, procure no texto extraido antes de concluir que nao ha informacao.",
         "Se houver mais de um balancete no contexto, use o mais recente ou cite o arquivo utilizado.",
         `Contexto atual da conversa:\n${currentContext || "Sem contexto atual informado."}`,
-        `Balancetes salvos no brain:\n${pdfMemoryContext || "Nao ha texto de balancete salvo nas memorias ativas."}`,
+        `Balancetes salvos no brain:\n${pdfMemoryContext || "Nao ha texto de balancete salvos nas memorias ativas."}`,
         `Pergunta do usuario:\n${question}`
       ].join("\n\n")
     }
   ]);
 
-  await saveMemory({
-    type: "chat_question",
-    origin: "chat",
-    summary: question.slice(0, 300),
-    content: {
-      question,
-      answer: response,
-      used_pdf_memory_ids: pdfMemories.map((memory) => memory.id)
-    }
-  });
+  // Brain Optimization: Extract only key insights from the interaction
+  const insights = await extractInsights(`Pergunta: ${question}\nResposta: ${response}`);
+  for (const insight of insights) {
+    await saveMemory({
+      type: "chat_question",
+      origin: "chat",
+      summary: insight,
+      content: { question, answer: response, insight }
+    });
+  }
 
   return { response };
 }

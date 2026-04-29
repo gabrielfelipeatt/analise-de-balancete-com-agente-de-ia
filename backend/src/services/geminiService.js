@@ -120,3 +120,18 @@ export function buildSystemPrompt(activeMemories = []) {
     memoryContext ? `Memorias validas do agente:\n${memoryContext}` : "Nao ha memorias validas disponiveis."
   ].join("\n\n");
 }
+
+export async function extractInsights(text) {
+  const prompt = [
+    "Analise o texto abaixo e extraia apenas pontos que sejam importantes para o 'cérebro' do agente de IA memorizar para futuras análises contábeis e fiscais.",
+    "Foque em: regras de negócio, critérios de análise, preferências do usuário ou inconsistências críticas recorrentes.",
+    "Retorne uma lista de aprendizados objetivos e concisos (um por linha).",
+    "Se não houver nada relevante para memorizar, retorne apenas 'NADA_RELEVANTE'.",
+    "Não inclua saudações ou explicações.",
+    `Texto para análise:\n${text}`
+  ].join("\n\n");
+
+  const response = await askGemini([{ role: "user", content: prompt }], { temperature: 0 });
+  if (response.includes("NADA_RELEVANTE")) return [];
+  return response.split("\n").map(s => s.replace(/^[-*]\s*/, "").trim()).filter(Boolean);
+}

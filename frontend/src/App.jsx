@@ -5,23 +5,29 @@ import { MemoryNotice } from "./components/MemoryNotice/MemoryNotice.jsx";
 import { Sidebar } from "./components/Sidebar/Sidebar.jsx";
 import { api } from "./services/api.js";
 
-const initialMessages = [
-  {
-    id: "welcome",
-    role: "assistant",
-    content: "Configure a chave Google Gemini e realize o treinamento inicial por PDF ou mensagem no chat."
-  }
-];
-
 export function App() {
   const [config, setConfig] = useState(null);
   const [brainStatus, setBrainStatus] = useState(null);
-  const [messages, setMessages] = useState(initialMessages);
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [currentContext, setCurrentContext] = useState("");
+  const [currentConversationId, setCurrentConversationId] = useState(null);
 
   const locked = useMemo(() => !config?.hasGeminiApiKey, [config]);
+
+  const welcomeMessage = useMemo(() => {
+    if (config?.hasGeminiApiKey) {
+      return "Olá! Chave Gemini configurada. Como posso ajudar com seus balancetes hoje?";
+    }
+    return "Configure a chave Google Gemini para começar.";
+  }, [config]);
+
+  useEffect(() => {
+    if (messages.length === 0 && config) {
+      setMessages([{ id: "welcome", role: "assistant", content: welcomeMessage }]);
+    }
+  }, [config, welcomeMessage]);
 
   async function refreshStatus() {
     const [configData, brainData] = await Promise.all([api.getConfig(), api.getBrainStatus()]);
@@ -33,8 +39,40 @@ export function App() {
     refreshStatus().catch((err) => setError(err.message));
   }, []);
 
-  function pushMessage(role, content) {
-    setMessages((current) => [...current, { id: crypto.randomUUID(), role, content }]);
+  async function handleSelectConversation(id) {
+    if (!id) {
+      setCurrentConversationId(null);
+      setMessages([{ id: "welcome", role: "assistant", content: welcomeMessage }]);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const data = await api.getConversations();
+      const conv = data.conversations.find(c => c.id === id);
+      if (conv) {
+        setCurrentConversationId(id);
+        setMessages(conv.messages || []);
+      }
+    } catch (err) {
+      setError("Erro ao carregar conversa.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function pushMessage(role, content) {
+    const newMessage = { id: crypto.randomUUID(), role, content };
+    const updatedMessages = [...messages, newMessage];
+    setMessages(updatedMessages);
+
+    if (currentConversationId) {
+      try {
+        await api.updateConversation(currentConversationId, { messages: updatedMessages });
+      } catch (err) {
+        console.error("Erro ao salvar mensagem na conversa:", err);
+      }
+    }
   }
 
   async function handleSaveKey(apiKey) {
@@ -45,7 +83,7 @@ export function App() {
     try {
       const data = await api.saveGeminiKey(apiKey);
       setConfig(data);
-      pushMessage("assistant", "Chave Google Gemini configurada. Agora faca o treinamento inicial por PDF ou ensinamento no chat.");
+      pushMessage("assistant", "Chave Google Gemini configurada com sucesso!");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -59,7 +97,7 @@ export function App() {
     try {
       const data = await api.removeGeminiKey();
       setConfig(data);
-      pushMessage("assistant", "Chave Google Gemini removida. Informe uma nova chave para voltar a usar o agente.");
+      pushMessage("assistant", "Chave Google Gemini removida. Informe uma nova chave para continuar.");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -70,12 +108,11 @@ export function App() {
   async function handleAsk(message) {
     setLoading(true);
     setError("");
-    pushMessage("user", message);
+    await pushMessage("user", message);
 
     try {
-      const needsTraining = !brainStatus?.trained;
-      const result = needsTraining ? await api.trainChat(message) : await api.ask(message, currentContext);
-      pushMessage("assistant", result.response);
+      const result = await api.ask(message, currentContext);
+      await pushMessage("assistant", result.response);
       await refreshStatus();
     } catch (err) {
       setError(err.message);
@@ -87,12 +124,12 @@ export function App() {
   async function handlePdf(file) {
     setLoading(true);
     setError("");
-    pushMessage("user", `PDF enviado: ${file.name}`);
+    await pushMessage("user", `Arquivo PDF enviado para análise: ${file.name}`);
 
     try {
-      const result = brainStatus?.trained ? await api.analyzePdf(file) : await api.trainPdf(file);
+      const result = await api.analyzePdf(file);
       setCurrentContext(result.response);
-      pushMessage("assistant", result.response);
+      await pushMessage("assistant", result.response);
       await refreshStatus();
     } catch (err) {
       setError(err.message);
@@ -106,7 +143,7 @@ export function App() {
     setError("");
     try {
       const result = await api.cleanExpired();
-      pushMessage("assistant", `${result.archived} memoria(s) expirada(s) foram arquivadas.`);
+      await pushMessage("assistant", `${result.archived} memória(s) expirada(s) foram arquivadas.`);
       await refreshStatus();
     } catch (err) {
       setError(err.message);
@@ -117,7 +154,11 @@ export function App() {
 
   return (
     <div className="app">
-      <Sidebar brainStatus={brainStatus} />
+      <Sidebar 
+        brainStatus={brainStatus} 
+        onSelectConversation={handleSelectConversation}
+        currentConversationId={currentConversationId}
+      />
       <div className="workspace">
         <ApiKeyForm config={config} onSubmit={handleSaveKey} onRemove={handleRemoveKey} loading={loading} />
         <MemoryNotice notice={brainStatus?.retentionNotice} onClean={handleCleanExpired} />

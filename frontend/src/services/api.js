@@ -32,5 +32,14 @@ export const api = {
     return request("/pdf/analyze", { method: "POST", body: formData });
   },
   ask: (question, currentContext) => request("/chat", { method: "POST", body: JSON.stringify({ question, currentContext }) }),
-  cleanExpired: () => request("/brain/clean-expired", { method: "POST" })
+  cleanExpired: () => request("/brain/clean-expired", { method: "POST" }),
+  
+  getConversations: () => request("/conversations"),
+  createConversation: (name, groupId) => request("/conversations", { method: "POST", body: JSON.stringify({ name, groupId }) }),
+  updateConversation: (id, data) => request(`/conversations/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteConversation: (id) => request(`/conversations/${id}`, { method: "DELETE" }),
+  
+  createGroup: (name) => request("/groups", { method: "POST", body: JSON.stringify({ name }) }),
+  updateGroup: (id, name) => request(`/groups/${id}`, { method: "PUT", body: JSON.stringify({ name }) }),
+  deleteGroup: (id) => request(`/groups/${id}`, { method: "DELETE" })
 };
